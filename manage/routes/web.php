@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('dashboard');
+    return view('layouts.home');
 });
 Route::get('/register' , [RegisteredUserController::class , 'create'])->name('showRegisterForm');
 Route::get('/dashboard', function () {
