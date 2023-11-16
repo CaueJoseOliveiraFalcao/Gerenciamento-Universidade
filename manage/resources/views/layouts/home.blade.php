@@ -14,9 +14,8 @@
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
         <!-- Scripts -->
+        @vite('resources/css/app.css')
         @vite(['resources/css/app.css', 'resources/js/app.js'])
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.1.1/flowbite.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/alpinejs@2.8.2/dist/alpine.min.js" defer></script>
         <script>
             // Initialization for ES Users
             import {
@@ -57,13 +56,14 @@
             </div>
         </div>
     </nav>   
-    <main class="flex flex-wrap items-center bg-black" style="justify-content: space-around; flex-wrap:wrap;padding-top">
-        <div class=" ">
-            <x-application-logo width="200" heigth="200" />
+    <main style="display: flex;align-items:center;justify-content:space-around;background-color:rgba(28,28,28,255);color:white; flex-wrap;wrap">
+        <div>
+            <x-application-logo width="200" height="200" />
         </div>
         <div>
-            <h1>About us</h1>
+            <h1 class="font-extralight">Bem-vindo ao Sistema de Gerenciamento de Matrículas</h1>
         </div>
     </main>
+    
     </body>
 </html>
