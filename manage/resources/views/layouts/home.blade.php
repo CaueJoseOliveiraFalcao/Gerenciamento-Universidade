@@ -29,7 +29,7 @@
     </head>
     <body>
     <!-- Main navigation container -->
-    <nav
+    <nav style="position: fixed;background-color:white"
         class="relative flex w-full flex-wrap items-center justify-between bg-[#FBFBFB] py-2 text-neutral-500 shadow-lg hover:text-neutral-700 focus:text-neutral-700 dark:bg-neutral-600 lg:py-4">
         <div class="flex w-full flex-wrap items-center justify-between px-3 py-4">
             <div class=" w-full flex items-center justify-between">
@@ -164,6 +164,16 @@
         .aboutUs p{
             max-width: 1000px;
 
+        }
+        @media (max-width : 768px){
+            .aboutUs{
+                height: 100%;
+                text-align: center;
+                padding: 1rem;
+            }
+            .aboutUs h1{
+                 margin:3rem 0;
+            }
         }
     </style>
 </html>
