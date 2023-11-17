@@ -41,9 +41,14 @@ class RegisteredUserController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
+        $permission = new \stdClass();
+        $permission->idusuario = $user->id;
+        $permission->name = $user->name;
+        $permission->isAdmin = true;
+        $permission->token = 'oi';
+        $permission = json_decode(json_encode($permission), true);
+        \DB::table('permissions')->insert($permission);
 
-        $user->personalAccessToken()->update(['isAdmin' => true]);
-        
         event(new Registered($user));
 
         Auth::login($user);
