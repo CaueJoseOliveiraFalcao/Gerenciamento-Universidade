@@ -4,7 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
+use App\Models\User;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Permissions extends Model
 {
     use HasFactory;
@@ -19,8 +20,8 @@ class Permissions extends Model
         'token'
     ];
 
-    public function user()
+    public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'idusuario', 'id');
+        return $this->belongsTo(User::class , 'idusuario');
     }
 }
