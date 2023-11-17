@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\Permissions;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
@@ -41,14 +42,13 @@ class RegisteredUserController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
-        $permission = new \stdClass();
-        $permission->idusuario = $user->id;
-        $permission->name = $user->name;
-        $permission->isAdmin = true;
-        $permission->token = 'oi';
-        $permission = json_decode(json_encode($permission), true);
-        \DB::table('permissions')->insert($permission);
-
+        $permission = Permissions::create([
+            'idusuario' => $user->id,
+            'name' => $user->name,
+            'isAdmin' => true,
+            'token' => 'valid'
+        ]);
+        
         event(new Registered($user));
 
         Auth::login($user);
