@@ -42,7 +42,7 @@ class RegisteredUserController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
-        $permission = Permissions::create([
+        $permissions = Permissions::create([
             'idusuario' => $user->id,
             'name' => $user->name,
             'isAdmin' => true,
@@ -54,5 +54,6 @@ class RegisteredUserController extends Controller
         Auth::login($user);
 
         return redirect(RouteServiceProvider::HOME);
+        
     }
 }
