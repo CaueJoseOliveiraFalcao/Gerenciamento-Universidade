@@ -3,7 +3,8 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-
+use App\Models\Permission;
+use App\Models\User;
 return new class extends Migration
 {
     /**
@@ -16,13 +17,14 @@ return new class extends Migration
             $table->string('permission');
             $table->timestamps();
         });
-        Schema::create('permission_user' , function(Blueprint $table){
-            $table->foreignIdFor(\App\Models\Permisson::class);
-            $table->foreignIdFor(\App\Models\User::class);
+        Schema::create('permission_user', function (Blueprint $table) {
+            $table->foreignIdFor(Permission::class);
+            $table->foreignIdFor(User::class);
+
         });
     }
 
-    /** 
+    /**
      * Reverse the migrations.
      */
     public function down(): void

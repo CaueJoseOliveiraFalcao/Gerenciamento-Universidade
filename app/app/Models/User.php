@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use App\Models\Permission;
 
 class User extends Authenticatable
 {
@@ -44,14 +45,12 @@ class User extends Authenticatable
     ];
     public function permissions(): BelongsToMany
     {
-        return $this->belongsToMany(Permissions::class);
-
+        return $this->belongsToMany(Permission::class);
     }
     public function givePermissionTo(string $permission): void
     {
-        /** @var Permission $p */
-        $p  = Permisson::query(firstOrCreate(compact(var_name : 'permission')));
+        $p = Permission::query()->firstOrCreate(compact('permission'));
 
-        $this->permissions()->attach($p);
+        $this->permission()->attach($p);
     }
 }

@@ -1,25 +1,28 @@
 <?php
 
+
 namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use App\Models\User;
+
 class PermissionUserTest extends TestCase
 {
-    public function isGivePermission()
+    public function testIsGivePermission()
     {
-        /**@var User $user */
-        
+        // Arrange
+        /** @var User $user */
         $user = User::factory()->createOne();
 
-        $user->givePermissionTo("Admin");
+        // Act
+        $user->givePermissionTo('edit-articles');
 
-        $this->assertTrue($user->hasPermissionTo("Admin"));
-        $this->assertDatabese('permission' , [
-            'permission' => 'Admin'
-        ])
+        // Assert
+        $this->assertTrue($user->hasPermissionTo('edit-articles'));
+        $this->assertDatabaseHas('permissions', [
+            'permission' => 'edit-articles',
+        ]);
     }
-    
 }
