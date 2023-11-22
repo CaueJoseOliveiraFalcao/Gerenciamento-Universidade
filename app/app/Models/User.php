@@ -53,4 +53,10 @@ class User extends Authenticatable
 
         $this->permission()->attach($p);
     }
+    public function HasPermissionTo(string $permission): void
+    {
+        $p = Permission::query()->firstOrCreate(compact('permission'));
+
+        $this->permission()->attach($p);
+    }
 }
