@@ -7,8 +7,10 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use App\Models\User;
+use App\Models\Post;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Middleware\CheckPermission;
+use App\Http\Controllers\PostController;
 class PermissionUserTest extends TestCase
 {
     public function test_is_give_permission()
@@ -44,5 +46,16 @@ class PermissionUserTest extends TestCase
         $this->actingAs($user)
             ->get('url-test')
             ->assertSuccessful();
+    }
+    public function test_polices()
+    {
+        $user = User::factory()->createOne();
+
+        $post = $user->posts()->save(Post::factory()->make());
+
+        $user2 = User::factory()->createOne();
+        $this->actingAs($user2)
+            ->delete(route('posts_destroy' , $post))
+            ->assertForbidden();
     }
 }

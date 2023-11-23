@@ -16,7 +16,8 @@ class CheckPermission
 
     public function handle(Request $request, Closure $next , string $permission): Response
     {
-        dd($permission);
+        abort_unless($request->user()->can($permission), Response::HTTP_FORBIDDEN);
+
         return $next($request);
     }
 }
