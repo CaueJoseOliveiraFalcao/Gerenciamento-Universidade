@@ -49,7 +49,7 @@ class PermissionUserTest extends TestCase
     }
     public function test_polices()
     {
-        $user = User::factory()->createOne();
+        $user = User::factory()->createOne()
 
         $post = $user->posts()->save(Post::factory()->make());
 
