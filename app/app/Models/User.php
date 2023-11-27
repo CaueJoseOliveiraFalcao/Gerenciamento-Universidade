@@ -57,12 +57,15 @@ class User extends Authenticatable
     
     public function givePermissionTo(string $permission): void
     {
-        $p = Permission::query()->firstOrCreate(compact('permission'));
+        $p = Permission::getPermission($permission);
 
         $this->permissions()->attach($p);
     }
     public function hasPermissionTo(string $permission): bool
     {
+        $permissionOfUser = Cache::rememberForever('permissions::of::user' .$this->id , function () {
+            return $this->permissions()->get();
+        });
         return $this->permissions()->where('permission' , "$permission")->exists();
 
     }

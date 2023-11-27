@@ -7,7 +7,7 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Gate;
 use App\Models\User;
 use App\Models\Permission; 
-
+use App\Observers\PermissionObserver;
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -23,6 +23,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        Permission::observe(PermissionObserver::class);
         Gate::before(function (User $user , $ability){
             if(Permission::query()->wherePermission($ability)->exists()) {
                 return $user->hasPermissionTo($ability);
