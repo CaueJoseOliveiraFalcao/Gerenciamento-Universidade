@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Cache;
 use Laravel\Sanctum\HasApiTokens;
 use App\Models\Permission;
 use App\Models\Post;
@@ -63,10 +65,11 @@ class User extends Authenticatable
     }
     public function hasPermissionTo(string $permission): bool
     {
+        /** @var Collection $permissionOfUser */
         $permissionOfUser = Cache::rememberForever('permissions::of::user' .$this->id , function () {
             return $this->permissions()->get();
         });
-        return $this->permissions()->where('permission' , "$permission")->exists();
+        return $permissionOfUser->where('permission' , $permission)->isNotEmpty();
 
     }
 }

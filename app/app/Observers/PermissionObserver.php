@@ -12,8 +12,6 @@ class PermissionObserver
     {
         Cache::rememberForever('permissions_cache', fn () => Permission::all());
     }
-
-
     /**
      * Handle the Permission "updated" event.
      */

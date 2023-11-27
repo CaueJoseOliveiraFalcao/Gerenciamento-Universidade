@@ -25,7 +25,7 @@ class AppServiceProvider extends ServiceProvider
     {
         Permission::observe(PermissionObserver::class);
         Gate::before(function (User $user , $ability){
-            if(Permission::query()->wherePermission($ability)->exists()) {
+            if (Permission::existsOnCache($ability)) {
                 return $user->hasPermissionTo($ability);
             }
         });
