@@ -10,6 +10,7 @@ class PermissionObserver
      */
     public function created(Permission $permission): void
     {
+        Cache::forget('permissions');
         Cache::rememberForever('permissions_cache', fn () => Permission::all());
     }
     /**

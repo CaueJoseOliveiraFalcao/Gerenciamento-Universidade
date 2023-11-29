@@ -14,17 +14,23 @@ class Permission extends Model
 
     public static function getPermission(string $permission): Permission
     {
-        return self::getAllCache()->where("permission" , $permission)->first();
+        $p =  self::getAllCache()->where("permission", $permission)->first();
 
+        if (!$p){
+            $p = Permission::query()->create(['permission' => $permission]);
+        }
+
+        return $p;
     }
+    
     public static function getAllCache(): Collection{
 
         /** @var Collection $permissions */
-        $permission = Cache::rememberForever('permissions', function () {
+        $permissions = Cache::rememberForever('permissions', function () {
             return self::all();
         });
 
-        return $permission;
+        return $permissions;
     }
     public static function existsOnCache(string $permission): bool{
 

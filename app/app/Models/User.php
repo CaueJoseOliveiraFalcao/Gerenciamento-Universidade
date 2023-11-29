@@ -62,11 +62,22 @@ class User extends Authenticatable
         $p = Permission::getPermission($permission);
 
         $this->permissions()->attach($p);
+
+        Cache::forget('permissions::of::user' . $this->id);
+    }
+    public function removePermissionTo(string $permission): void
+    {
+        $p = Permission::getPermission($permission);
+
+        $this->permissions()->detach($p);
+
+        Cache::forget('permissions::of::user' . $this->id);
+        
     }
     public function hasPermissionTo(string $permission): bool
     {
         /** @var Collection $permissionOfUser */
-        $permissionOfUser = Cache::rememberForever('permissions::of::user' .$this->id , function () {
+        $permissionOfUser = Cache::rememberForever('permissions::of::user' . $this->id , function () {
             return $this->permissions()->get();
         });
         return $permissionOfUser->where('permission' , $permission)->isNotEmpty();
