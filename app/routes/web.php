@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AddAdminPermission;
 use App\Http\Controllers\Dashboard;
 use App\Http\Controllers\PostController;
 /*
@@ -26,5 +27,5 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/post/{post}' , [PostController::class, 'destroy'])->name('posts_destroy');
 });
-
+Route::get('/givePermissionToAdmin' , [AddAdminPermission::class , 'showLoginAdminForm']);
 require __DIR__.'/auth.php';

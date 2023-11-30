@@ -23,12 +23,12 @@ class PermissionUserTest extends TestCase
         $user = User::factory()->createOne();
 
         // Act
-        $user->givePermissionTo('edit-articles');
+        $user->givePermissionTo('admin');
 
         // Assert
-        $this->assertTrue($user->hasPermissionTo('edit-articles'));
+        $this->assertTrue($user->hasPermissionTo('admin'));
         $this->assertDatabaseHas('permissions', [
-            'permission' => 'edit-articles',
+            'permission' => 'admin',
         ]);
     }
     public function test_router_middware()
