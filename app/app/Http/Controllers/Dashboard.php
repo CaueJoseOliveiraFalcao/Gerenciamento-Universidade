@@ -10,7 +10,6 @@ class Dashboard extends Controller
 
     public function index()
     {
-        $this->authorize('edit-articles');
         return view('dashboard');
     }
 }
