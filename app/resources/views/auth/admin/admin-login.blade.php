@@ -1,8 +1,13 @@
 <x-guest-layout>
     <!-- Session Status -->
+    
+    @php
+        $errorMessage = isset($errorMenssage) ? $errorMessage : null;   
+    @endphp
+    <x-input-error :messages="$errorMessage" class="mt-2" />
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
-    <form method="POST" action="{{ route('login') }}">
+    <form method="POST" action="{{ route('acessPermissionAdminPainel') }}">
         @csrf
         <h1 style="margin: 1rem 0;text-align:center;">Login de Criaçao de Usuarios Admin</h1>
         <!-- Email Address -->

@@ -27,5 +27,6 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/post/{post}' , [PostController::class, 'destroy'])->name('posts_destroy');
 });
-Route::get('/givePermissionToAdmin' , [AddAdminPermission::class , 'showLoginAdminForm']);
+Route::get('/givePermissionToAdmin' , [AddAdminPermission::class , 'showLoginAdminForm'])->name('showLoginAdminForm');
+Route::post('/acessPermissionAdminPainel' , [AddAdminPermission::class , 'store'])->name('acessPermissionAdminPainel');;
 require __DIR__.'/auth.php';
