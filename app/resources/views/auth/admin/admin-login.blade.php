@@ -1,10 +1,8 @@
 <x-guest-layout>
     <!-- Session Status -->
     
-    @php
-        $errorMessage = isset($errorMenssage) ? $errorMessage : null;   
-    @endphp
-    <x-input-error :messages="$errorMessage" class="mt-2" />
+    <x-error-alert/>
+
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
     <form method="POST" action="{{ route('acessPermissionAdminPainel') }}">

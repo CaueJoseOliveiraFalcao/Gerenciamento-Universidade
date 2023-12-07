@@ -25,13 +25,11 @@ class AddAdminPermission extends Controller
                 return view('auth.admin-painel');
             }
             else{
-                $errorMessage = 'Seu usuario nao tem Permissão admin';
-                return view('auth.admin.admin-login', compact('errorMessage'));
+                return redirect()->back()->withErrors('Usuario sem Permissão');
             }
         }
         else{
-            $errorMessage = 'Credenciais Invalidas';
-            return view('auth.admin.admin-login', compact('errorMessage'));
+            return redirect()->back()->withErrors('Credenciais Invalidas');
         }
     }
 }
