@@ -15,7 +15,7 @@ class AddAdminPermission extends Controller
     public function store(Request $request){
         $request->validate([
             'email' => ['email', 'required', 'string', 'lowercase'],
-            'password' => ['required'], // Substituí 'password' por 'required' e 'password'
+            'password' => ['required'],
         ]);        
         $credentiais = $request->only('email' , 'password');
 
