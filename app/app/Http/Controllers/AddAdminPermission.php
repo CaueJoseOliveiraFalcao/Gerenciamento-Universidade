@@ -22,7 +22,8 @@ class AddAdminPermission extends Controller
         if (Auth::attempt($credentiais)){
             $user = User::where('email', $request->email)->first();
             if($user->hasPermissionTo('admin')){
-                return view('auth.admin-painel');
+                $allUsers = User::all();
+                return view('auth.admin-painel' , compact('allUsers'));
             }
             else{
                 return redirect()->back()->withErrors('Usuario sem Permissão');

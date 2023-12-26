@@ -29,6 +29,11 @@
     <body>
         
     <!-- Main navigation container -->
+    @if(Auth::check())
+        <p>Usuario com Sessao</p>
+    @else
+        <p>Usuario sem Sessao</p>
+    @endif
     <nav style="position: fixed;background-color:white"
         class="relative flex w-full flex-wrap items-center justify-between bg-[#FBFBFB] py-2 text-neutral-500 shadow-lg hover:text-neutral-700 focus:text-neutral-700 dark:bg-neutral-600 lg:py-4">
         <div class="flex w-full flex-wrap items-center justify-between px-3 py-4">
@@ -42,9 +47,19 @@
                 </svg>   
                 <span class="font-medium dark:text-neutral-200">FACU-GEB</span> 
                 </a>
-                
 
-                <div>
+                <div> 
+                    @if(Auth::check())
+                    <form action="{{ route('logout')}}" METHOD='POST'>
+                    @csrf
+                        <a href="/login" class="bg-white mx-5   hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow">
+                            Acesso ao Sistema
+                        </a>
+                        <button class="bg-white   hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow" type="submit">
+                            Logout
+                        </button>
+                    </form>
+                    @else 
                     <a href="/login" class="bg-white   hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow">
                         Login
                     </a>
@@ -52,6 +67,7 @@
                     <a href="/register" class="bg-white hover:bg-gray-100 text-gray-800 font-semibold  py-2 px-4 border border-gray-400 rounded shadow">
                         Register
                     </a>
+                    @endif
                 </div>  
             </div>
         </div>

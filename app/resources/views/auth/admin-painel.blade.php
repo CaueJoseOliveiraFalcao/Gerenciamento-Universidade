@@ -43,6 +43,38 @@
         </button>
         </form> 
     </header>
+    @php
+         $userId = 5;
+         $permissions = \App\Models\User::consultPermission($userId);   
+    @endphp
+    {{$permissions}}
+    <div class="container">
+        @if(auth()->user()->hasPermissionTo('admin') == 1)
+            <h1>Lista de Usuários:</h1>
+            <ul>
+                <table class="table-fixed">
+                    <thead>
+                      <tr>
+                        <th>Id</th>
+                        <th>Name</th>
+                        <th>Emaiç</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                @foreach ($allUsers as $user)
+                    <tr>
+                        <td>{{$user->id}}</td>
+                    </tr>
+                @endforeach
+                    </tbody>
+                </table>
+
+            </ul>
+        @else
+            <p>Você não é um admin</p>
+        @endif
+
+    </div>
 
 </body>
 </html>

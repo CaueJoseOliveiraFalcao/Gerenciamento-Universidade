@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Cache;
 use Laravel\Sanctum\HasApiTokens;
 use App\Models\Permission;
 use App\Models\Post;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
@@ -81,6 +83,31 @@ class User extends Authenticatable
             return $this->permissions()->get();
         });
         return $permissionOfUser->where('permission' , $permission)->isNotEmpty();
+
+    }
+    public static function consultPermission(int $userId ): string
+    {
+        $user = static::find($userId);
+
+        if(!$user){
+            return 'usuario nao encontrado';
+        }
+
+        $permissions = DB::table('permission_user')
+        ->where('user_id', $userId)
+        ->join('permissions', 'permissions.id', '=', 'permission_user.permission_id')
+        ->pluck('permissions.permission')
+        ->first(); 
+
+        if (empty($permissions)) {
+            return response('Usuário sem permissão', 200);
+        }
+        
+        
+        
+        return $permissions;
+    
+
 
     }
 }
