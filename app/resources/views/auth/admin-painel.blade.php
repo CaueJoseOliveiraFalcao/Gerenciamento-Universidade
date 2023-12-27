@@ -43,11 +43,6 @@
         </button>
         </form> 
     </header>
-    @php
-         $userId = 5;
-         $permissions = \App\Models\User::consultPermission($userId);   
-    @endphp
-    {{$permissions}}
     <div class="container">
         @if(auth()->user()->hasPermissionTo('admin') == 1)
             <h1>Lista de Usuários:</h1>
@@ -57,7 +52,7 @@
                       <tr>
                         <th>Id</th>
                         <th>Name</th>
-                        <th>Emaiç</th>
+                        <th>Email</th>
                       </tr>
                     </thead>
                     <tbody>

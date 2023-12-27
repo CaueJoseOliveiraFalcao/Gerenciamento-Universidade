@@ -85,29 +85,5 @@ class User extends Authenticatable
         return $permissionOfUser->where('permission' , $permission)->isNotEmpty();
 
     }
-    public static function consultPermission(int $userId ): string
-    {
-        $user = static::find($userId);
-
-        if(!$user){
-            return 'usuario nao encontrado';
-        }
-
-        $permissions = DB::table('permission_user')
-        ->where('user_id', $userId)
-        ->join('permissions', 'permissions.id', '=', 'permission_user.permission_id')
-        ->pluck('permissions.permission')
-        ->first(); 
-
-        if (empty($permissions)) {
-            return response('Usuário sem permissão', 200);
-        }
-        
-        
-        
-        return $permissions;
-    
-
-
-    }
+   
 }
