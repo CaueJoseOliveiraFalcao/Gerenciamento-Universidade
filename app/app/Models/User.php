@@ -85,5 +85,4 @@ class User extends Authenticatable
         return $permissionOfUser->where('permission' , $permission)->isNotEmpty();
 
     }
-   
 }

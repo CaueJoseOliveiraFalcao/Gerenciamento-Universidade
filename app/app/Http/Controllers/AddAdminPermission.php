@@ -28,23 +28,22 @@ class AddAdminPermission extends Controller
                     $userId = $user->id;
                     $userName = $user->name;
                     $userEmail = $user->email;
-                    $permissions = DB::table('permission_user')
-                    ->where('user_id', $userId)
-                    ->join('permissions', 'permissions.id', '=', 'permission_user.permission_id')
-                    ->pluck('permissions.permission')
-                    ->first(); 
+                    $UserPermission = $user->permissions;
+                    if ($UserPermission->isNotEmpty()){
+                        $permissionName = $UserPermission->first->first()->permission;
+                    } else{
+                        $permissionName = 'UsP';
+                    }
                     $userArray = [
                         'id' => $userId,
                         'name' => $userName,
                         'email' => $userEmail,
-                        'permission' => $permissions
+                        'permission' => $permissionName
                     ];
 
-                    $allUsersWithPermission[] = $userArray;
-                    
+                    $allUsersWithPermission[] = $userArray; 
                 }
-                dd($allUsersWithPermission);
-                return view('auth.admin-painel' , compact('allUsers'));
+                return view('auth.admin-painel' , compact('allUsersWithPermission'));
             }
             else{
                 return redirect()->back()->withErrors('Usuario sem Permissão');

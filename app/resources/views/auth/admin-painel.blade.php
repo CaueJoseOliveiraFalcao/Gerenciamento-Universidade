@@ -30,6 +30,28 @@
         height: 40px;
         cursor: pointer;
     }
+    .container {
+        max-width: 90%;
+        overflow-x: auto;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 10px 0;
+    }
+
+    th, td {
+        border: 1px solid #ddd;
+        padding: 5px;
+        text-align: left;
+    }
+
+    th {
+        background-color: #f2f2f2;
+    }
+
+
 </style>
 <body>
     <header>
@@ -44,27 +66,36 @@
         </form> 
     </header>
     <div class="container">
+        <form>
+            @csrf
         @if(auth()->user()->hasPermissionTo('admin') == 1)
-            <h1>Lista de Usuários:</h1>
+            <h1 style="text-align: center">Lista de Usuários</h1>
             <ul>
                 <table class="table-fixed">
                     <thead>
                       <tr>
+                        <th>Select</th>
                         <th>Id</th>
                         <th>Name</th>
                         <th>Email</th>
+                        <th>Permission</th>
                       </tr>
                     </thead>
                     <tbody>
-                @foreach ($allUsers as $user)
+                @foreach ($allUsersWithPermission as $user)
                     <tr>
-                        <td>{{$user->id}}</td>
+                        <td style="text-align: center"><input type="checkbox"></td>
+                        <td>{{$user['id']}}</td>
+                        <td>{{$user['name']}}</td>
+                        <td>{{$user['email']}}</td>
+                        <td>{{$user['permission']}}</td>
                     </tr>
                 @endforeach
                     </tbody>
                 </table>
 
             </ul>
+        </form>
         @else
             <p>Você não é um admin</p>
         @endif
