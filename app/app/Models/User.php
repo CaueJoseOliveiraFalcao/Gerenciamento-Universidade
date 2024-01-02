@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Cache;
 use Laravel\Sanctum\HasApiTokens;
 use App\Models\Permission;
 use App\Models\Post;
+use App\Models\Group;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 class User extends Authenticatable
@@ -27,6 +29,7 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
+        'group',
         'password',
     ];
 
@@ -49,7 +52,9 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
-
+    public function group() {
+        return $this->belongsTo(Group::class);
+    }
     public function permissions(): BelongsToMany
     {
         return $this->belongsToMany(Permission::class);
@@ -58,7 +63,15 @@ class User extends Authenticatable
     {
         return $this->hasMany(Post::class);
     }
-    
+    public function assingToGroup(string $group): void
+    {
+        $g = Group::where("name" , $group)->first();
+
+        if($g){
+            $this->group()->associate($g);
+            $this->save();
+        }
+    }
     public function givePermissionTo(string $permission): void
     {
         $p = Permission::getPermission($permission);

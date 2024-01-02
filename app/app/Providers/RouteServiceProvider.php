@@ -18,6 +18,7 @@ class RouteServiceProvider extends ServiceProvider
      * @var string
      */
     public const HOME = '/';
+    public const AdminPainel = '/givePermissionToAdmin';
     /**
      * Define your route model bindings, pattern filters, and other route configuration.
      */
@@ -34,7 +35,8 @@ class RouteServiceProvider extends ServiceProvider
 
             Route::middleware('web')
                 ->group(base_path('routes/web.php'))
-                ->group(base_path('routes/adminPainel.php'));
+                ->group(base_path('routes/adminPainel.php'))
+                ->group(base_path('routes/GroupRoutes.php'));
         });
     }
 }

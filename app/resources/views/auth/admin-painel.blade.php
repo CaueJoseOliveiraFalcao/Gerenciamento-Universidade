@@ -50,7 +50,20 @@
     th {
         background-color: #f2f2f2;
     }
+    .groupForm{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center
+    }
+    .groupForm form{
+        padding: 1rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
 
+    }
 
 </style>
 <body>
@@ -101,6 +114,23 @@
         @endif
 
     </div>
+    <section class="groupForm">
+        <h1>Criação de Grupos</h1>
+        <form action="{{ route('storeGroup')}}" method="POST">
+            @csrf
 
+            <!-- Name -->
+            <div>
+                <x-input-label for="name" :value="__('Name')" />
+                <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
+                <x-input-error :messages="$errors->get('name')" class="mt-2" />
+            </div>
+
+                <x-primary-button class="ms-4">
+                    {{ __('Register') }}
+                </x-primary-button>
+            </div>
+        </form>
+    </section>
 </body>
 </html>

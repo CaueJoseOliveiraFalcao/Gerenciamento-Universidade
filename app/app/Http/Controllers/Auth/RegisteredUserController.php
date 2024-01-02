@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
+use App\Models\Group;
 
 class RegisteredUserController extends Controller
 {
@@ -42,9 +43,35 @@ class RegisteredUserController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
+        $group = Group::where('name' , 'UEA')->first();
+
+        $user->givePermissionTo('coodinator');
+
+        $user->group()->associate($group);
+        $user->save();
         event(new Registered($user));
         Auth::login($user);
 
         return redirect(RouteServiceProvider::HOME);
+    }
+    public function storeCordenatorUser(Request $request): RedirectResponse
+    {
+        $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
+            'group' => ['required'],
+            'password' => ['required', Rules\Password::defaults()],
+        ]);
+
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'group' => $request->group,
+            'password' => Hash::make($request->password),
+        ]);
+
+        event(new Registered($user));
+
+        return redirect(RouteServiceProvider::AdminPainel);
     }
 }
