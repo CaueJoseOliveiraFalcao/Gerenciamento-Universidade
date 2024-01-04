@@ -42,12 +42,10 @@ class RegisteredUserController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
-
-        $group = Group::where('name' , 'UEA')->first();
-
-        $user->givePermissionTo('coodinator');
-
-        $user->group()->associate($group);
+        //acossiate to a group
+        //$group = Group::where('name' , 'UEA')->first();
+        //$user->group()->associate($group);
+        $user->givePermissionTo('admin');
         $user->save();
         event(new Registered($user));
         Auth::login($user);

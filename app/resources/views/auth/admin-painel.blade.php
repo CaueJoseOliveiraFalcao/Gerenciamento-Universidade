@@ -79,8 +79,9 @@
         </form> 
     </header>
     <div class="container">
-        <form>
+        <form action="/multtpost"  method="POST">
             @csrf
+            @method("DELETE")
         @if(auth()->user()->hasPermissionTo('admin') == 1)
             <h1 style="text-align: center">Lista de Usuários</h1>
             <ul>
@@ -97,7 +98,7 @@
                     <tbody>
                 @foreach ($allUsersWithPermission as $user)
                     <tr>
-                        <td style="text-align: center"><input type="checkbox"></td>
+                        <td style="text-align: center"><input value=`{{$user['id']}}` name='selected_users[]' type="checkbox"></td>
                         <td>{{$user['id']}}</td>
                         <td>{{$user['name']}}</td>
                         <td>{{$user['email']}}</td>
@@ -108,12 +109,16 @@
                 </table>
 
             </ul>
+            <button type="submit">Deletar Usuarios Selecionados</button>
         </form>
         @else
             <p>Você não é um admin</p>
         @endif
 
     </div>
+    <script>
+
+    </script>
     <section class="groupForm">
         <h1>Criação de Grupos</h1>
         <form action="{{ route('storeGroup')}}" method="POST">

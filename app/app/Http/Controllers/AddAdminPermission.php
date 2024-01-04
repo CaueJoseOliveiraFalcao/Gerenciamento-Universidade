@@ -22,7 +22,14 @@ class AddAdminPermission extends Controller
         if (Auth::attempt($credentiais)){
             $user = User::where('email', $request->email)->first();
             if($user->hasPermissionTo('admin')){
-                $allUsers = User::all();
+                if($user->id === 3){
+                    $allUsers = User::all();
+                }else{
+                    $allUsers = User::whereHas('permissions' , function ($query) {
+                        $query->where('permission' , 'coodinator');
+                    })->get();
+
+                }
                 $allUsersWithPermission = [];
                 foreach ($allUsers as $user){
                     $userId = $user->id;

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -56,5 +57,26 @@ class ProfileController extends Controller
         $request->session()->regenerateToken();
 
         return Redirect::to('/');
+    }
+    public function mult_destroy(Request $request)
+    {
+        if ($request->has('selected_users')) {
+            $selectedUsers = $request->input('selected_users');
+            
+            // Faça o que precisar com os valores selecionados
+            foreach ($selectedUsers as $userId) {
+                $user = User::find(intval($userId));
+                dd($user);
+                if($user){
+                    $UserPermission = $user->permissions;
+                    $permissionName = $UserPermission->first->first()->permission;
+                    dd($permissionName);
+                }
+            }
+        } else {
+            echo "Nenhum usuário selecionado";
+        }
+    
+        // Resto do código...
     }
 }
