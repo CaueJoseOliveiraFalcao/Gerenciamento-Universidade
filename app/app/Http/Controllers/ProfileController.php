@@ -65,16 +65,27 @@ class ProfileController extends Controller
             
             // Faça o que precisar com os valores selecionados
             foreach ($selectedUsers as $userId) {
+                $userId = trim($userId , "`");
                 $user = User::find(intval($userId));
-                dd($user);
                 if($user){
                     $UserPermission = $user->permissions;
-                    $permissionName = $UserPermission->first->first()->permission;
-                    dd($permissionName);
+                    if ($UserPermission->isNotEmpty()){
+                        $user->removePermissionTo($UserPermission);
+                        $user->delete();
+
+                    }
+                    else{
+                        $user->delete();
+
+                    }
+
+
                 }
             }
+            redirect()->back()->withErrors('Usuario deletado');
         } else {
             echo "Nenhum usuário selecionado";
+            redirect()->back()->withErrors('Usuario nao selecionado');
         }
     
         // Resto do código...

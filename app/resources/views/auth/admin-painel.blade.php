@@ -31,8 +31,8 @@
         cursor: pointer;
     }
     .container {
-        max-width: 90%;
-        overflow-x: auto;
+        overflow-x: hidden;
+        width: 100%;
     }
 
     table {
@@ -50,19 +50,24 @@
     th {
         background-color: #f2f2f2;
     }
-    .groupForm{
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center
+    ul{
+        padding: 0;
+        margin: 0;
     }
-    .groupForm form{
-        padding: 1rem;
+    .tableForm{
         display: flex;
+        width: 100%;
         flex-direction: column;
         justify-content: center;
-        align-items: center;
-
+    }
+    .ButtonConfirmDelete{
+        width: 150px;
+        height: 60px;
+        margin:  0 auto;
+        background: darkred;
+        color: white;
+        border-style: none;
+        border-radius: 5px;
     }
 
 </style>
@@ -78,8 +83,9 @@
         </button>
         </form> 
     </header>
+    <x-error-alert/>
     <div class="container">
-        <form action="/multtpost"  method="POST">
+        <form class="tableForm" action="/multtpost"  method="POST">
             @csrf
             @method("DELETE")
         @if(auth()->user()->hasPermissionTo('admin') == 1)
@@ -93,23 +99,24 @@
                         <th>Name</th>
                         <th>Email</th>
                         <th>Permission</th>
+                        <th>Grupo</th>
                       </tr>
                     </thead>
                     <tbody>
                 @foreach ($allUsersWithPermission as $user)
                     <tr>
-                        <td style="text-align: center"><input value=`{{$user['id']}}` name='selected_users[]' type="checkbox"></td>
+                        <td style="text-align: center"><input  value=`{{$user['id']}}` name='selected_users[]' type="checkbox"></td>
                         <td>{{$user['id']}}</td>
                         <td>{{$user['name']}}</td>
                         <td>{{$user['email']}}</td>
                         <td>{{$user['permission']}}</td>
+                        <td>{{$user['group']}}</td>
                     </tr>
                 @endforeach
                     </tbody>
                 </table>
-
             </ul>
-            <button type="submit">Deletar Usuarios Selecionados</button>
+            <button class="ButtonConfirmDelete" type="submit">Deletar Usuarios </button>
         </form>
         @else
             <p>Você não é um admin</p>
