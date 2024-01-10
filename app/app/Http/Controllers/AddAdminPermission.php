@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Group;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -11,7 +12,6 @@ class AddAdminPermission extends Controller
     public function showLoginAdminForm(){
         return view('auth.admin.admin-login');
     }
-
     public function store(Request $request){
         $request->validate([
             'email' => ['email', 'required', 'string', 'lowercase'],
@@ -31,21 +31,32 @@ class AddAdminPermission extends Controller
 
                 }
                 $allUsersWithPermission = [];
+                $groupName = '';
                 foreach ($allUsers as $user){
                     $userId = $user->id;
                     $userName = $user->name;
                     $userEmail = $user->email;
+                    if($user->group_id){
+                        $userGroupId = $user->group_id;
+                        $groupName = Group::find($userGroupId);
+                        $groupName = $groupName->name;
+                    }
+                    else{
+                        $groupName = 'usg';
+                    }
+
                     $UserPermission = $user->permissions;
                     if ($UserPermission->isNotEmpty()){
                         $permissionName = $UserPermission->first->first()->permission;
                     } else{
-                        $permissionName = 'UsP';
+                        $permissionName = 'usp';
                     }
                     $userArray = [
                         'id' => $userId,
                         'name' => $userName,
                         'email' => $userEmail,
-                        'permission' => $permissionName
+                        'permission' => $permissionName,
+                        'group' => $groupName,
                     ];
 
                     $allUsersWithPermission[] = $userArray; 
