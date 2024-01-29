@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Group;
+use App\Models\Permission;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -31,6 +32,8 @@ class AddAdminPermission extends Controller
 
                 }
                 $allUsersWithPermission = [];
+                $allDisponiblePermissions = Permission::pluck('permission');
+                $allDisponibleGroups = Group::pluck('name');
                 $groupName = '';
                 foreach ($allUsers as $user){
                     $userId = $user->id;
@@ -41,15 +44,11 @@ class AddAdminPermission extends Controller
                         $groupName = Group::find($userGroupId);
                         $groupName = $groupName->name;
                     }
-                    else{
-                        $groupName = 'usg';
-                    }
+   
 
                     $UserPermission = $user->permissions;
                     if ($UserPermission->isNotEmpty()){
                         $permissionName = $UserPermission->first->first()->permission;
-                    } else{
-                        $permissionName = 'usp';
                     }
                     $userArray = [
                         'id' => $userId,
@@ -61,7 +60,7 @@ class AddAdminPermission extends Controller
 
                     $allUsersWithPermission[] = $userArray; 
                 }
-                return view('auth.admin-painel' , compact('allUsersWithPermission'));
+                return view('auth.admin-painel' , compact('allUsersWithPermission' , 'allDisponiblePermissions' , 'allDisponibleGroups'));
             }
             else{
                 return redirect()->back()->withErrors('Usuario sem Permissão');

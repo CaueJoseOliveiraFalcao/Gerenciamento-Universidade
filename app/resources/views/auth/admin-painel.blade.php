@@ -109,8 +109,22 @@
                         <td>{{$user['id']}}</td>
                         <td>{{$user['name']}}</td>
                         <td>{{$user['email']}}</td>
-                        <td>{{$user['permission']}}</td>
-                        <td>{{$user['group']}}</td>
+                        <td>{{$user['permission']}}
+                            <select name="permission" id="permission">
+                                @foreach ($allDisponiblePermissions as $permission)
+                                        <option value="{{$permission}}" {{$user['permission'] == $permission ? 'selected' : ''}}>
+                                            {{$permission}}
+                                        </option>
+                                @endforeach
+                            </select></td>
+                        <td>{{$user['group']}}
+                            <select name="group" id="gruop">
+                                @foreach ($allDisponibleGroups as $group)
+                                    <option value="{{$group}}" {{$user['group'] == $group ? 'selected' : ''}}>
+                                        {{$group}}
+                                    </option>
+                                @endforeach
+                        </td>
                     </tr>
                 @endforeach
                     </tbody>
