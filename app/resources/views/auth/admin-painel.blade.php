@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Admin</title>
+    @vite(['resources/css/app.css','resources/js/app.js'])
 </head>
 <style>
     body{
@@ -109,7 +110,7 @@
                         <td>{{$user['id']}}</td>
                         <td>{{$user['name']}}</td>
                         <td>{{$user['email']}}</td>
-                        <td>{{$user['permission']}}
+                        <td>
                             <select name="permission" id="permission">
                                 @foreach ($allDisponiblePermissions as $permission)
                                         <option value="{{$permission}}" {{$user['permission'] == $permission ? 'selected' : ''}}>
@@ -117,7 +118,7 @@
                                         </option>
                                 @endforeach
                             </select></td>
-                        <td>{{$user['group']}}
+                        <td>
                             <select name="group" id="gruop">
                                 @foreach ($allDisponibleGroups as $group)
                                     <option value="{{$group}}" {{$user['group'] == $group ? 'selected' : ''}}>
@@ -131,6 +132,12 @@
                 </table>
             </ul>
             <button class="ButtonConfirmDelete" type="submit">Deletar Usuarios </button>
+
+
+<!-- Modal toggle -->
+
+  
+    
         </form>
         @else
             <p>Você não é um admin</p>
@@ -142,6 +149,7 @@
     </script>
     <section class="groupForm">
         <h1>Criação de Grupos</h1>
+        
         <form action="{{ route('storeGroup')}}" method="POST">
             @csrf
 
@@ -158,5 +166,7 @@
             </div>
         </form>
     </section>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.js"></script>
+
 </body>
 </html>

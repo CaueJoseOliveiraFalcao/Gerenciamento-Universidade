@@ -15,11 +15,6 @@ class Permission extends Model
     public static function getPermission(User $user , string $permission): Permission
     {
 
-        $previousPermission = $user->permission()->first();
-
-        if($previousPermission){
-            $user->permissions()->detach($previousPermission);
-        }
         $p =  self::getAllCache()->where("permission", $permission)->first();
 
         if (!$p){

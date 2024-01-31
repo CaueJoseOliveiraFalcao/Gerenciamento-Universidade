@@ -44,8 +44,12 @@ class AddAdminPermission extends Controller
                         $groupName = Group::find($userGroupId);
                         $groupName = $groupName->name;
                     }
-   
-
+                    else{
+                        $NoGroup = Group::find(7);
+                        $user->group()->associate($NoGroup);
+                        $user->save();
+                        $groupName = $NoGroup->name;
+                    }
                     $UserPermission = $user->permissions;
                     if ($UserPermission->isNotEmpty()){
                         $permissionName = $UserPermission->first->first()->permission;
