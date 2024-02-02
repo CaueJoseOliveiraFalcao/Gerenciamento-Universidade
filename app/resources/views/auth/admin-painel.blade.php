@@ -45,9 +45,7 @@
     th, td {
         border: 1px solid #ddd;
         padding: 5px;
-        text-align: left;
     }
-
     th {
         background-color: #f2f2f2;
     }
@@ -55,6 +53,7 @@
         padding: 0;
         margin: 0;
     }
+
     .tableForm{
         display: flex;
         width: 100%;
@@ -86,9 +85,8 @@
     </header>
     <x-error-alert/>
     <div class="container">
-        <form class="tableForm" action="/multtpost"  method="POST">
+        <form class="tableForm" action="/changeAcess"  method="POST">
             @csrf
-            @method("DELETE")
         @if(auth()->user()->hasPermissionTo('admin') == 1)
             <h1 style="text-align: center">Lista de Usuários</h1>
             <ul>
@@ -110,16 +108,17 @@
                         <td>{{$user['id']}}</td>
                         <td>{{$user['name']}}</td>
                         <td>{{$user['email']}}</td>
-                        <td>
+                        <td><h1 class="text-center" >Permissiao Atual : {{$user['permission']}}</h1>
                             <select name="permission" id="permission">
                                 @foreach ($allDisponiblePermissions as $permission)
-                                        <option value="{{$permission}}" {{$user['permission'] == $permission ? 'selected' : ''}}>
+                                        <option  value="{{$permission}}" {{$user['permission'] == $permission ? 'selected' : ''}}>
                                             {{$permission}}
                                         </option>
+
                                 @endforeach
                             </select></td>
-                        <td>
-                            <select name="group" id="gruop">
+                        <td><h1 class="text-center" >Grupo Atual : {{$user['group']}}</h1>
+                            <select name="group" id="gruop" class="group">
                                 @foreach ($allDisponibleGroups as $group)
                                     <option value="{{$group}}" {{$user['group'] == $group ? 'selected' : ''}}>
                                         {{$group}}
@@ -127,12 +126,17 @@
                                 @endforeach
                         </td>
                     </tr>
+
+
                 @endforeach
+                
                     </tbody>
                 </table>
             </ul>
-            <button class="ButtonConfirmDelete" type="submit">Deletar Usuarios </button>
-
+            <input type="hidden" class="arrayFinal">
+            <div style="display: flex; justify-content:center; align-itens:center;">
+                <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Salvar</button>
+            </div>
 
 <!-- Modal toggle -->
 
@@ -144,9 +148,6 @@
         @endif
 
     </div>
-    <script>
-
-    </script>
     <section class="groupForm">
         <h1>Criação de Grupos</h1>
         
@@ -166,6 +167,39 @@
             </div>
         </form>
     </section>
+    <script>
+        if (!window.selectedValues){
+            window.selectedValues = [];
+        }
+        function updateFinalInput(){
+            document.querySelector('.arrayFinal').value = JSON.stringify(selectedValues);
+            console.log(selectedValues);
+        } 
+        document.querySelectorAll('#permission').forEach(function(select) {
+            select.addEventListener('change' , function(){
+                console.log(this);
+                const userId = this.closest('tr').querySelector('td:nth-child(2)').textContent;
+                console.log(userId);
+                row = this.closest('tr');
+                row.classList.add('bg-blue-100');
+                selectedValues.push({userId: userId , permissionValue : this.value})
+                updateFinalInput();
+
+            });
+        });
+        document.querySelectorAll('.group').forEach(function(select) {
+            select.addEventListener('change' , function(){
+                console.log(this);
+                const userId = this.closest('tr').querySelector('td:nth-child(2)').textContent;
+                console.log(userId);
+                row = this.closest('tr');
+                row.classList.add('bg-blue-100');
+                selectedValues.push({userId: userId , groupValue : this.value})
+                updateFinalInput();
+
+            });
+        });
+    </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.js"></script>
 
 </body>
