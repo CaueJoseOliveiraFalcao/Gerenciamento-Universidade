@@ -12,7 +12,7 @@ class Permission extends Model
 
     protected $guarded = [];
 
-    public static function getPermission(User $user , string $permission): Permission
+    public static function getPermission(string $permission): Permission
     {
 
         $p =  self::getAllCache()->where("permission", $permission)->first();

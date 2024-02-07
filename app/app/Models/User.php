@@ -74,8 +74,7 @@ class User extends Authenticatable
     }
     public function givePermissionTo(string $permission): void
     {
-        $user = $this->user;
-        $p = Permission::getPermission($user , $permission);
+        $p = Permission::getPermission($permission);
 
         $this->permissions()->attach($p);
 
@@ -83,8 +82,7 @@ class User extends Authenticatable
     }
     public function removePermissionTo(string $permission): void
     {
-        $user = $this->user;
-        $p = Permission::getPermission($user , $permission);
+        $p = Permission::getPermission($permission);
 
         $this->permissions()->detach($p);
 

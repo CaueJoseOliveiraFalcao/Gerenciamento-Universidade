@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
+use App\Models\Group;
 
 class ProfileController extends Controller
 {
@@ -89,5 +90,35 @@ class ProfileController extends Controller
         }
     
         // Resto do código...
+    }
+    public function changeAcess(Request $request) 
+    {
+        $PermissionsArray = json_decode($request->input('arrayFinal') , true);
+        if ($PermissionsArray) {
+            foreach ($PermissionsArray as $Permission) {
+                if (!empty($Permission['permissionValue'])){
+                    $userdb = User::find($Permission['userId']);
+
+                    $newPermission = $Permission['permissionValue'];
+                    $oldPermission = $userdb->permissions->first->first()->permission;
+
+                    $userdb->removePermissionTo($oldPermission);
+                    $userdb->givePermissionTo($newPermission);
+
+                    return redirect('/givePermissionToAdmin');
+                    
+                }
+                else{
+                    $userdb = User::find($Permission['userId']);
+
+                    $newGroup = $Permission['groupValue'];
+                    $IdGroup = Group::where('name' , $newGroup)->first();
+                    $userdb->group()->associate($IdGroup);
+                    $userdb->save();
+                    return redirect('/givePermissionToAdmin');
+                }
+            }
+        }
+
     }
 }

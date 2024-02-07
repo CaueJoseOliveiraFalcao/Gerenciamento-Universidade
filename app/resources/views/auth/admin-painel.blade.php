@@ -86,7 +86,7 @@
     <x-error-alert/>
     <div class="container">
         <form class="tableForm" action="/changeAcess"  method="POST">
-            @csrf
+        @csrf
         @if(auth()->user()->hasPermissionTo('admin') == 1)
             <h1 style="text-align: center">Lista de Usuários</h1>
             <ul>
@@ -133,16 +133,12 @@
                     </tbody>
                 </table>
             </ul>
-            <input type="hidden" class="arrayFinal">
+            <input type="hidden" name="arrayFinal" class="arrayFinal">
             <div style="display: flex; justify-content:center; align-itens:center;">
-                <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Salvar</button>
+                <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Salvar</button>
             </div>
-
-<!-- Modal toggle -->
-
-  
-    
         </form>
+
         @else
             <p>Você não é um admin</p>
         @endif
@@ -172,8 +168,9 @@
             window.selectedValues = [];
         }
         function updateFinalInput(){
-            document.querySelector('.arrayFinal').value = JSON.stringify(selectedValues);
-            console.log(selectedValues);
+            const arrayfinal = document.querySelector('.arrayFinal');
+            arrayfinal.value = JSON.stringify(selectedValues);
+            console.log(arrayfinal.value);
         } 
         document.querySelectorAll('#permission').forEach(function(select) {
             select.addEventListener('change' , function(){
@@ -181,7 +178,9 @@
                 const userId = this.closest('tr').querySelector('td:nth-child(2)').textContent;
                 console.log(userId);
                 row = this.closest('tr');
+                col = this.closest('td');
                 row.classList.add('bg-blue-100');
+                col.classList.add('bg-blue-200');
                 selectedValues.push({userId: userId , permissionValue : this.value})
                 updateFinalInput();
 
@@ -193,7 +192,9 @@
                 const userId = this.closest('tr').querySelector('td:nth-child(2)').textContent;
                 console.log(userId);
                 row = this.closest('tr');
+                col = this.closest('td');
                 row.classList.add('bg-blue-100');
+                col.classList.add('bg-blue-200');
                 selectedValues.push({userId: userId , groupValue : this.value})
                 updateFinalInput();
 
