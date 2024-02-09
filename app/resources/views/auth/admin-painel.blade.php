@@ -31,10 +31,10 @@
         height: 40px;
         cursor: pointer;
     }
-    .container {
-        overflow-x: hidden;
-        width: 100%;
-    }
+
+    .w-full {
+  width: 100% !important; /* Garante que a largura seja sempre 100% */
+}
 
     table {
         width: 100%;
@@ -56,7 +56,9 @@
 
     .tableForm{
         display: flex;
-        width: 100%;
+        width: 1100px;
+        border-style: solid;
+        border-radius: 10px;
         flex-direction: column;
         justify-content: center;
     }
@@ -84,52 +86,74 @@
         </form> 
     </header>
     <x-error-alert/>
-    <div class="container">
+    
+
+
+    <div class="main-form-div flex justify-center align-itens-center w-full">
         <form class="tableForm" action="/changeAcess"  method="POST">
         @csrf
         @if(auth()->user()->hasPermissionTo('admin') == 1)
             <h1 style="text-align: center">Lista de Usuários</h1>
             <ul>
-                <table class="table-fixed">
-                    <thead>
-                      <tr>
-                        <th>Select</th>
-                        <th>Id</th>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Permission</th>
-                        <th>Grupo</th>
-                      </tr>
+                <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                    <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                        <tr>
+                            <th scope="col" class="px-6 py-3">
+                                DELETAR
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                Id
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                Nome
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                Email
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                Permissão
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                Grupo
+                            </th>
+                        </tr>
                     </thead>
                     <tbody>
-                @foreach ($allUsersWithPermission as $user)
-                    <tr>
-                        <td style="text-align: center"><input  value=`{{$user['id']}}` name='selected_users[]' type="checkbox"></td>
-                        <td>{{$user['id']}}</td>
-                        <td>{{$user['name']}}</td>
-                        <td>{{$user['email']}}</td>
-                        <td><h1 class="text-center" >Permissiao Atual : {{$user['permission']}}</h1>
+                        @foreach ($allUsersWithPermission as $user)
+                        <tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
+                            <th scope="row" class="px-6 py-4 font-medium flex flex-collumn justify-center items-center text-gray-900 whitespace-nowrap dark:text-white">
+                                <input style="margin: 29px" value=`{{$user['id']}}` name='selected_users[]' type="checkbox">
+                            </th>
+                            <td class="px-6 py-4">
+                                {{$user['id']}}
+                            </td>
+                            <td class="px-6 py-4">
+                                {{$user['name']}}
+                            </td>
+                            <td class="px-6 py-4">
+                                {{$user['email']}}
+                            </td>
+                            <td class="px-6 py-4">
+                                <h1 class="text-center" >Permissiao Atual : {{$user['permission']}}</h1>
                             <select name="permission" id="permission">
                                 @foreach ($allDisponiblePermissions as $permission)
                                         <option  value="{{$permission}}" {{$user['permission'] == $permission ? 'selected' : ''}}>
                                             {{$permission}}
                                         </option>
-
                                 @endforeach
-                            </select></td>
-                        <td><h1 class="text-center" >Grupo Atual : {{$user['group']}}</h1>
+                            </select>
+                            </td>
+                            <td class="px-6 py-4">
+                                <h1 class="text-center" >Grupo Atual : {{$user['group']}}</h1>
                             <select name="group" id="gruop" class="group">
                                 @foreach ($allDisponibleGroups as $group)
                                     <option value="{{$group}}" {{$user['group'] == $group ? 'selected' : ''}}>
                                         {{$group}}
                                     </option>
                                 @endforeach
-                        </td>
-                    </tr>
-
-
-                @endforeach
-                
+                            </td>
+                        </tr>
+                        @endforeach
                     </tbody>
                 </table>
             </ul>
