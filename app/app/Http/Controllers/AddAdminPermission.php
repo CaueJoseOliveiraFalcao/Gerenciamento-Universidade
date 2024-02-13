@@ -8,8 +8,13 @@ use App\Models\Permission;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Livewire\WithPagination;
+use Livewire\Component;
+use App\Models\Post;
+
 class AddAdminPermission extends Controller
 {
+    use WithPagination;
     public function showLoginAdminForm(){
         return view('auth.admin.admin-login');
     }
@@ -63,8 +68,16 @@ class AddAdminPermission extends Controller
                     ];
 
                     $allUsersWithPermission[] = $userArray; 
+
                 }
-                return view('auth.admin-painel' , compact('allUsersWithPermission' , 'allDisponiblePermissions' , 'allDisponibleGroups'));
+                $allUsersWithPermission = User::query()->paginate(10);
+
+                return view('auth.admin-painel', [
+                    'allUsersWithPermission' => $allUsersWithPermission,
+                    'allDisponiblePermissions' => $allDisponiblePermissions,
+                    'allDisponibleGroups' => $allDisponibleGroups,
+                ]);
+
             }
             else{
                 return redirect()->back()->withErrors('Usuario sem Permissão');

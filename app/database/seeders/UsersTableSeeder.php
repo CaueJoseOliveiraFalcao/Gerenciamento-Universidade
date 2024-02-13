@@ -6,6 +6,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class UsersTableSeeder extends Seeder
 {
@@ -14,62 +15,25 @@ class UsersTableSeeder extends Seeder
      */
     public function run(): void
     {
+        $values = [];
         $password = Hash::make('C4u3j0s3');
 
-        $users = [
-            [
-                'name' => 'John Doe',
-                'email' => 'john.doe@example.com',
+        for($i = 0; $i <= 50 ; $i++){
+            $name = Str::random(12);
+            $email = Str::random(8) . '@example.com';
+            
+            $values = [
+                'name' => $name,
+                'email' => $email,
                 'password' => $password,
-            ],
-            [
-                'name' => 'Jane Doe',
-                'email' => 'jane.doe@example.com',
-                'password' => $password,
-            ],
-            [
-                'name' => 'Bob Smith',
-                'email' => 'bob.smith@example.com',
-                'password' => $password,
-            ],
-            [
-                'name' => 'Alice Johnson',
-                'email' => 'alice.johnson@example.com',
-                'password' => $password,
-            ],
-            [
-                'name' => 'Charlie Brown',
-                'email' => 'charlie.brown@example.com',
-                'password' => $password,
-            ],
-            [
-                'name' => 'David White',
-                'email' => 'david.white@example.com',
-                'password' => $password,
-            ],
-            [
-                'name' => 'Eva Green',
-                'email' => 'eva.green@example.com',
-                'password' => $password,
-            ],
-            [
-                'name' => 'Frank Miller',
-                'email' => 'frank.miller@example.com',
-                'password' => $password,
-            ],
-            [
-                'name' => 'Grace Taylor',
-                'email' => 'grace.taylor@example.com',
-                'password' => $password,
-            ],
-            [
-                'name' => 'Harry Davis',
-                'email' => 'harry.davis@example.com',
-                'password' => $password,
-            ],
-        ];
+                'group_id' => 7
+            ];
 
-        DB::table('users')->insert($users);
+
+            
+        DB::table('users')->insert($values);
+        }
+
 
 
     }

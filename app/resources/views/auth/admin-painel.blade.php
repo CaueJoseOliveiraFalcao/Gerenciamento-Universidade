@@ -95,6 +95,9 @@
         @if(auth()->user()->hasPermissionTo('admin') == 1)
             <h1 style="text-align: center">Lista de Usuários</h1>
             <ul>
+                <div style="display: flex; justify-content:center; align-itens:center;">
+                    <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Salvar</button>
+                </div>
                 <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                     <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                         <tr>
@@ -158,9 +161,7 @@
                 </table>
             </ul>
             <input type="hidden" name="arrayFinal" class="arrayFinal">
-            <div style="display: flex; justify-content:center; align-itens:center;">
-                <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Salvar</button>
-            </div>
+            
         </form>
 
         @else
@@ -168,25 +169,6 @@
         @endif
 
     </div>
-    <section class="groupForm">
-        <h1>Criação de Grupos</h1>
-        
-        <form action="{{ route('storeGroup')}}" method="POST">
-            @csrf
-
-            <!-- Name -->
-            <div>
-                <x-input-label for="name" :value="__('Name')" />
-                <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
-                <x-input-error :messages="$errors->get('name')" class="mt-2" />
-            </div>
-
-                <x-primary-button class="ms-4">
-                    {{ __('Register') }}
-                </x-primary-button>
-            </div>
-        </form>
-    </section>
     <script>
         if (!window.selectedValues){
             window.selectedValues = [];
