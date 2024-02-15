@@ -136,8 +136,18 @@
                             <td class="px-6 py-4">
                                 {{$user['email']}}
                             </td>
+                            @php
+                                $userPermission = json_decode($user->permissions);
+                            @endphp
                             <td class="px-6 py-4">
-                                <h1 class="text-center" >Permissiao Atual : {{$user['permission']}}</h1>
+                                <h1 class="text-center" >Permissiao Atual :</h1>
+                                @if ($userPermission && count($userPermission) > 0){
+                                    <h1>{{$userPermission[0]->id}}</h1>
+                                }
+                                @else{
+                                    <h1>Usuario sem permissao</h1>
+                                }
+                                @endif
                             <select name="permission" id="permission">
                                 @foreach ($allDisponiblePermissions as $permission)
                                         <option  value="{{$permission}}" {{$user['permission'] == $permission ? 'selected' : ''}}>

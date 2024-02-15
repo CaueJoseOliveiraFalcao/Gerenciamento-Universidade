@@ -10,6 +10,9 @@ use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\PainelController;
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -39,6 +42,9 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
+    Route::get('dashboard' , [DashboardController::class , 'create']);
+    Route::post('dashboard' , [DashboardController::class , 'store']);
+    Route::get('painel' , [PainelController::class , 'create'])->middleware('permission');
     Route::get('verify-email', EmailVerificationPromptController::class)
                 ->name('verification.notice');
 

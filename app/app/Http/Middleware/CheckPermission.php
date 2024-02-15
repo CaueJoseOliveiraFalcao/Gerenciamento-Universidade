@@ -14,10 +14,11 @@ class CheckPermission
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
 
-    public function handle(Request $request, Closure $next , string $permission): Response
+    public function handle(Request $request, Closure $next): Response
     {
-        abort_unless($request->user()->can($permission), Response::HTTP_FORBIDDEN);
-
-        return $next($request);
+        if (auth()->user()->can('admin') || auth()->user()->can('coordinator')) {
+            return $next($request);
+        }
+        abort(403, 'Você não tem permissão para acessar esta página.');
     }
 }

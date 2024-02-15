@@ -70,8 +70,13 @@ class AddAdminPermission extends Controller
                     $allUsersWithPermission[] = $userArray; 
 
                 }
-                $allUsersWithPermission = User::query()->paginate(10);
-
+                
+                if ($request->search){
+                    $allUsersWithPermission = User::where($request->search , 'email')->paginate(10);
+                }
+                else{
+                    $allUsersWithPermission = User::query()->paginate(10);
+                }
                 return view('auth.admin-painel', [
                     'allUsersWithPermission' => $allUsersWithPermission,
                     'allDisponiblePermissions' => $allDisponiblePermissions,

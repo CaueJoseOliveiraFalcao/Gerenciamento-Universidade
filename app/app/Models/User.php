@@ -17,9 +17,10 @@ use App\Models\Group;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Foundation\Auth\Access\Authorizable;
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable , Authorizable;
 
     /**
      * The attributes that are mass assignable.

@@ -27,7 +27,7 @@
         </script>
     </head>
     <body>
-        
+
     <!-- Main navigation container -->
     @if(Auth::check())
         <p>Usuario com Sessao</p>
