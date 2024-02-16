@@ -43,10 +43,10 @@ class RegisteredUserController extends Controller
             'password' => Hash::make($request->password),
         ]);
         //acossiate to a group
-        //$group = Group::where('name' , 'UEA')->first();
-        //$user->group()->associate($group);
+        $group = Group::where('name' , 'UEA')->first();
+        $user->group()->associate($group);
         //Give to user a No usp User Widhout permission
-        $user->givePermissionTo('usp');
+        $user->givePermissionTo('student');
         $user->save();
         event(new Registered($user));
         Auth::login($user);
