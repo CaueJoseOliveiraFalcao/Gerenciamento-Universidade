@@ -13,20 +13,20 @@ class PainelController extends Controller
     public function create(Request $request){
         $user = session('user');
         $userPermission = $user->permissions->first->first()->permission;
-        $isFinded = true;
-        $users = $this->getUsersByPermision($request , $user , $userPermission , $isFinded);
-
-        return view('auth.dashboard.painel.painel');
+        $isFinded = 'notseached';
+        $users = $this->seachAndGetUsers($request , $user , $userPermission , $isFinded);
+        return view('auth.dashboard.painel.painel' , compact('users' , 'isFinded'));
     }
-    public function getUsersByPermision(Request $input , $user , $permission , &$isFinded){
+    public function seachAndGetUsers(Request $input , $user , $permission , &$isFinded){
         if($input->input('search') && $permission === 'admin'){
             $FindUser = User::where('email' , $input->input('search'))->first();
             if (($FindUser)){
+                $isFinded = 'notfound';
                 return $FindUser;
             }
             else{
-                $isFinded = false;
-                return $users = User::all();
+                $isFinded = 'notfound';
+                return User::all();
             }
         }
         elseif ($permission === 'admin'){
@@ -42,22 +42,31 @@ class PainelController extends Controller
                 ->select('users.*')
                 ->distinct()
                 ->get();
-            if ($FindUser){
-                return $FindUser;
-            }
-            else{
-                $isFinded = false;
-            }
+                if (count($FindUser) > 0){
+                    $isFinded = 'found';
+                    return $FindUser;
+                }
+                else{
+                    $isFinded = 'notfound';
+                    $user_group_id = $user->group_id;
+                    return  User::join('permission_user', 'users.id', '=', 'permission_user.user_id')
+                    ->join('permissions', 'permission_user.permission_id', '=', 'permissions.id')
+                    ->whereIn('permissions.permission', ['coordinator', 'teacher' , 'student'])
+                    ->where('users.group_id', $user_group_id)
+                    ->select('users.*')
+                    ->distinct()
+                    ->get();
+                }
         }
         elseif($permission === 'coordinator'){
             $user_group_id = $user->group_id;
-             return $users = User::join('permission_user', 'users.id', '=', 'permission_user.user_id')
-                ->join('permissions', 'permission_user.permission_id', '=', 'permissions.id')
-                ->whereIn('permissions.permission', ['coordinator', 'teacher' , 'student'])
-                ->where('users.group_id', $user_group_id)
-                ->select('users.*')
-                ->distinct()
-                ->get();
+            return  User::join('permission_user', 'users.id', '=', 'permission_user.user_id')
+            ->join('permissions', 'permission_user.permission_id', '=', 'permissions.id')
+            ->whereIn('permissions.permission', ['coordinator', 'teacher' , 'student'])
+            ->where('users.group_id', $user_group_id)
+            ->select('users.*')
+            ->distinct()
+            ->get();
         }
     }
 }

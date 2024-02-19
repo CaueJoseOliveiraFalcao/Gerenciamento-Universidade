@@ -8,5 +8,14 @@
 </head>
 <body>
     <h1>Painel</h1>
+    <p>{{ $isFinded}}</p>
+    @foreach ($users as $user)
+        <p>{{ $user->name }}</p>
+    @endforeach
+
+
+{{-- Exibir isFinded --}}
+
+
 </body>
 </html>
