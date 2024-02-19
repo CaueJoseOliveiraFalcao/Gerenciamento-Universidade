@@ -10,7 +10,6 @@ use function Laravel\Prompts\search;
 
 class PainelController extends Controller
 {
-
     public function create(Request $request){
         $user = session('user');
         $userPermission = $user->permissions->first->first()->permission;
@@ -60,13 +59,5 @@ class PainelController extends Controller
                 ->distinct()
                 ->get();
         }
-    }
-    public function SearchUsersByEmail($users , $email){
-        foreach($users as $user){
-            if ($user->email === $email){
-                return $user;
-            }
-        }
-
     }
 }
