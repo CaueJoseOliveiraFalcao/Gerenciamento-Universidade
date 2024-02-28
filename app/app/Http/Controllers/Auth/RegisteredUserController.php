@@ -46,7 +46,7 @@ class RegisteredUserController extends Controller
         $group = Group::where('name' , 'UEA')->first();
         $user->group()->associate($group);
         //Give to user a No usp User Widhout permission
-        $user->givePermissionTo('student');
+        $user->givePermissionTo('estudante');
         $user->save();
         event(new Registered($user));
         Auth::login($user);

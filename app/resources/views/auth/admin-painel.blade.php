@@ -83,10 +83,10 @@
                 <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15M12 9l-3 3m0 0 3 3m-3-3h12.75" />
               </svg>
         </button>
-        </form> 
+        </form>
     </header>
     <x-error-alert/>
-    
+
 
 
     <div class="main-form-div flex justify-center align-itens-center w-full">
@@ -171,7 +171,7 @@
                 </table>
             </ul>
             <input type="hidden" name="arrayFinal" class="arrayFinal">
-            
+
         </form>
 
         @else
@@ -187,11 +187,11 @@
             const arrayfinal = document.querySelector('.arrayFinal');
             arrayfinal.value = JSON.stringify(selectedValues);
             console.log(arrayfinal.value);
-        } 
+        }
         document.querySelectorAll('#permission').forEach(function(select) {
             select.addEventListener('change' , function(){
                 console.log(this);
-                const userId = this.closest('tr').querySelector('td:nth-child(2)').textContent;
+                const userId = this.closest('tr').querySelector('td:nth-child(2)').textContent.trim();
                 console.log(userId);
                 row = this.closest('tr');
                 col = this.closest('td');
