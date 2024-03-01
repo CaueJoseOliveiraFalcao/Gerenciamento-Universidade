@@ -55,7 +55,7 @@
                 </svg>
             </button>
             <!-- confirm modal -->
-            <button data-modal-target="default-modal" data-modal-toggle="default-modal" class="block text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800" type="button">
+            <button id="ConfirmTableInsert" data-modal-target="default-modal" data-modal-toggle="default-modal" class="block text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800" type="button">
                 Confirmar Alterações
             </button>
         </div>
@@ -68,7 +68,7 @@
                             <!-- Modal header -->
                             <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
                                 <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
-                                    Terms of Service
+                                    Confirme as Alterações
                                 </h3>
                                 <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="default-modal">
                                     <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
@@ -79,12 +79,18 @@
                             </div>
                             <!-- Modal body -->
                             <div class="p-4 md:p-5 space-y-4">
-                                <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-                                    With less than a month to go before the European Union enacts new consumer privacy laws for its citizens, companies around the world are updating their terms of service agreements to comply.
-                                </p>
-                                <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-                                    The European Union’s General Data Protection Regulation (G.D.P.R.) goes into effect on May 25 and is meant to ensure a common set of data rights in the European Union. It requires organizations to notify users as soon as possible of high-risk data breaches that could personally affect them.
-                                </p>
+                                    <table id="TableInsert" class="w-full">
+                                        <thead>
+                                            <tr>
+                                                <th>Id do Usuario</th>
+                                                <th>Nome Do Usuario</th>
+                                                <th>Alteração</th>
+                                                <th>Excluir Alteração</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="tbodyInsert">                                      
+                                        </tbody>
+                                    </table>
                             </div>
                             <!-- Modal footer -->
                             <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
@@ -94,7 +100,6 @@
                         </div>
                     </div>
                 </div>
-
             </section>
             <!-- Main modal -->
             <div id="default-modal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
@@ -215,26 +220,24 @@
       </table>
 </div>
 </form>
-
     <script>
+        const arrayfinal = document.querySelector('.arrayFinal');
         if (!window.selectedValues){
             window.selectedValues = [];
         }
         function updateFinalInput(){
-            const arrayfinal = document.querySelector('.arrayFinal');
             arrayfinal.value = JSON.stringify(selectedValues);
-            console.log(arrayfinal.value);
         }
         document.querySelectorAll('#permission').forEach(function(select) {
             select.addEventListener('change' , function(){
                 console.log(this);
                 const userId = this.closest('tr').querySelector('td:nth-child(1)').textContent.trim();
-                console.log(userId);
+                const userName = this.closest('tr').querySelector('td:nth-child(2)').textContent.trim();
                 row = this.closest('tr');
                 col = this.closest('td');
                 row.classList.add('bg-blue-100');
                 col.classList.add('bg-blue-200');
-                selectedValues.push({userId: userId , permissionValue : this.value})
+                selectedValues.push({userId: userId ,userName : userName, groupValue : this.value});
                 updateFinalInput();
 
             });
@@ -243,16 +246,54 @@
             select.addEventListener('change' , function(){
                 console.log(this);
                 const userId = this.closest('tr').querySelector('td:nth-child(1)').textContent.trim();
-                console.log(userId);
+                const userName = this.closest('tr').querySelector('td:nth-child(2)').textContent.trim();
                 row = this.closest('tr');
                 col = this.closest('td');
                 row.classList.add('bg-blue-100');
                 col.classList.add('bg-blue-200');
-                selectedValues.push({userId: userId , groupValue : this.value})
+                selectedValues.push({userId: userId ,userName : userName, groupValue : this.value});
                 updateFinalInput();
 
             });
         });
+        // Função para limpar o valor do input
+        function limparInput() {
+            arrayfinal.value = ''; // Define o valor como uma string vazia
+        }
+
+        // Chama a função limparInput quando o documento estiver pronto
+        document.addEventListener('DOMContentLoaded', function () {
+            limparInput();
+        });
+        document.getElementById('ConfirmTableInsert').addEventListener('click' , () => {
+            console.log(arrayfinal.value);
+            if (arrayfinal.value === ''){
+                alert('Primeiro escolha as alterações');
+            }
+            else{
+
+                let tableValues = JSON.parse(arrayfinal.value)
+                console.log(typeof(tableValues));
+
+                const tbody = document.getElementById('tbodyInsert');
+
+                tableValues.forEach(user => {
+                    var row = tbody.insertRow();
+                    var cell1 = row.insertCell(0);
+                    var cell2 = row.insertCell(1);
+                    var cell3 = row.insertCell(2);
+
+                    cell1.textContent = user.userId;
+                    cell1.clasName = 'text-center'
+                    cell2.textContent = user.userName;
+                    cell3.textContent = user.permissionValue || user.groupValue;
+
+                    var exButton = document.createElement('button');
+                    exButton.textContent = 'Excluir'
+
+                });
+            }
+        })
     </script>
 {{-- Exibir isFinded --}}
 
