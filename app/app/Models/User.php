@@ -64,6 +64,17 @@ class User extends Authenticatable
     {
         return $this->hasMany(Post::class);
     }
+    public function createGroup(string $group): void
+    {
+        $group =  Group::where('name' , $group)->first();
+        if (!$group){
+            Group::create([
+                'name' => $group,
+            ]);
+        }
+
+
+    }
     public function assingToGroup(string $group): void
     {
         $g = Group::where("name" , $group)->first();

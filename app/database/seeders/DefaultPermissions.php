@@ -12,8 +12,9 @@ class DefaultPermissions extends Seeder
      */
     public function run(): void
     {
-        $defaultPermissions = ['admin' , 'coordinator' , 'teacher' , 'sudent'];
-
-
+        $defaultPermissions = ['admin' , 'coordinator' , 'teacher' , 'student' , 'usp'];
+        foreach ($defaultPermissions as $permision){
+            Permission::getPermission($permision);
+        }
     }
 }

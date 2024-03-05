@@ -18,4 +18,15 @@ class Group extends Model
     {
         return $this->hasMany(User::class);
     }
+    public function createGroup(string $group): void
+    {
+        $istrue =  Group::where('name' , $group)->first();
+        if (!$istrue){
+            Group::create([
+                'name' => $group,
+            ]);
+        }
+
+
+    }
 }
