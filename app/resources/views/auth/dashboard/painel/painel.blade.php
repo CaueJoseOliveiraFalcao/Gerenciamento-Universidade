@@ -88,7 +88,7 @@
                                                 <th>Excluir Alteração</th>
                                             </tr>
                                         </thead>
-                                        <tbody id="tbodyInsert">                                      
+                                        <tbody id="tbodyInsert" >                                      
                                         </tbody>
                                     </table>
                             </div>
@@ -235,8 +235,6 @@
                 const userName = this.closest('tr').querySelector('td:nth-child(2)').textContent.trim();
                 row = this.closest('tr');
                 col = this.closest('td');
-                row.classList.add('bg-blue-100');
-                col.classList.add('bg-blue-200');
                 selectedValues.push({userId: userId ,userName : userName, groupValue : this.value});
                 updateFinalInput();
 
@@ -249,8 +247,6 @@
                 const userName = this.closest('tr').querySelector('td:nth-child(2)').textContent.trim();
                 row = this.closest('tr');
                 col = this.closest('td');
-                row.classList.add('bg-blue-100');
-                col.classList.add('bg-blue-200');
                 selectedValues.push({userId: userId ,userName : userName, groupValue : this.value});
                 updateFinalInput();
 
@@ -276,20 +272,46 @@
                 console.log(typeof(tableValues));
 
                 const tbody = document.getElementById('tbodyInsert');
-
+                tbody.innerHTML ='';
+                //INSERÇAO DA TABELA MODEL
                 tableValues.forEach(user => {
+                    
                     var row = tbody.insertRow();
                     var cell1 = row.insertCell(0);
                     var cell2 = row.insertCell(1);
                     var cell3 = row.insertCell(2);
+                    var cell4 = row.insertCell(3);
 
                     cell1.textContent = user.userId;
-                    cell1.clasName = 'text-center'
                     cell2.textContent = user.userName;
                     cell3.textContent = user.permissionValue || user.groupValue;
-
+                    cell1.className = 'text-center';
+                    cell2.className = 'text-center';
+                    cell3.className = 'text-center';
+                    cell4.className = 'text-center bg-red-600 text-white rounded-md';
                     var exButton = document.createElement('button');
-                    exButton.textContent = 'Excluir'
+
+                    //FUNÇAO EXCLUIR
+
+                    exButton.onclick = function(e) {
+                        e.preventDefault();
+                        row = this.closest('tr')
+                        Alteracao = row.cells[2].textContent;
+                        UserId = row.cells[0].textContent; 
+                        IndexToRemove = -1
+                        function Search (){
+                            selectedValues.forEach((element , index) => {
+                            if (UserId === element.userId && (Alteracao === element.groupValue || Alteracao === element.permissionValue)) {
+                                selectedValues.splice(index , 1);
+                                console.log(selectedValues);
+                                row.parentNode.removeChild(row);
+                                updateFinalInput();
+                            }
+                         })};
+                         Search();
+                    }
+                    cell4.appendChild(exButton);
+                    exButton.textContent = 'Excluir Alteração'
 
                 });
             }
