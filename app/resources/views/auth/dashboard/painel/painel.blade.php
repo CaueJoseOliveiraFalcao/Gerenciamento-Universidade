@@ -209,7 +209,7 @@
                     <select name="permission" id="permission">
                     @foreach ($DisponiblePermissions as $Permission)
                     
-                        <option  {{$userPermission == $Permission->permission ? 'selected' : ''}}>
+                        <option {{$userPermission == $Permission->permission ? 'selected' : ''}}>
                             {{$Permission->permission}}
                         </option>
                         
