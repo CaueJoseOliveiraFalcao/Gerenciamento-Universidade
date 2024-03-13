@@ -104,20 +104,18 @@ class ProfileController extends Controller
 
                     $userdb->removePermissionTo($oldPermission);
                     $userdb->givePermissionTo($newPermission);
-
-                    return redirect('/givePermissionToAdmin');
                     
                 }
-                else{
+                if (!empty($Permission['groupValue'])){
                     $userdb = User::find($Permission['userId']);
 
                     $newGroup = $Permission['groupValue'];
                     $IdGroup = Group::where('name' , $newGroup)->first();
                     $userdb->group()->associate($IdGroup);
                     $userdb->save();
-                    return redirect('/givePermissionToAdmin');
                 }
             }
+            return redirect('/painel');
         }
 
     }
